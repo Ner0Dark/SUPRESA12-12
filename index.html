@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Surpresa Especial</title>
+
+<style>
+/* ----------------------- ESTILO GERAL ----------------------- */
+body {
+    margin: 0;
+    overflow-x: hidden;
+    background: transparent; /* Transparente para deixar o fundo #starry aparecer */
+    font-family: Arial, sans-serif;
+    color: white;
+    text-align: center;
+}
+
+/* ----------------------- FUNDO ANIMADO — NOITE ESTRELADA DE VAN GOGH (GLOBAL, ATRÁS DE TUDO) ----------------------- */
+#starry {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2; /* Atrás de tudo */
+    overflow: hidden;
+    background: linear-gradient(to bottom, #001122 0%, #000814 50%, #000000 100%); /* Gradiente céu azul escuro */
+}
+
+/* Estrelas amarelas/brancas piscando e girando em espirais (inspirado na pintura) */
+.star {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: #ffff00; /* Amarelo Van Gogh */
+    border-radius: 50%;
+    animation: twinkle 3s infinite ease-in-out, spiral 20s infinite linear;
+}
+.star:nth-child(odd) { animation-duration: 4s, 25s; }
+.star:nth-child(even) { animation-duration: 2.5s, 30s; }
+
+/* Estrelas maiores e mais brilhantes (como na pintura) */
+.star.large {
+    width: 8px;
+    height: 8px;
+    box-shadow: 0 0 10px #ffff00;
+    animation: twinkle 3s infinite ease-in-out, spiral 15s infinite linear reverse;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.2); }
+}
+
+@keyframes spiral {
+    0% { transform: rotate(0deg) translateX(0) translateY(0); }
+    25% { transform: rotate(90deg) translateX(50px) translateY(-20px); }
+    50% { transform: rotate(180deg) translateX(0) translateY(-40px); }
+    75% { transform: rotate(270deg) translateX(-50px) translateY(-20px); }
+    100% { transform: rotate(360deg) translateX(0) translateY(0); }
+}
+
+/* Nuvens ondulantes */
+.cloud {
+    position: absolute;
+    width: 200px;
+    height: 80px;
+    background: rgba(100, 150, 200, 0.5); /* Azul claro */
+    border-radius: 50%;
+    filter: blur(10px);
+    animation: drift 20s infinite linear;
+}
+.cloud:nth-child(1) { top: 20%; left: 10%; animation-duration: 25s; }
+.cloud:nth-child(2) { top: 30%; left: 50%; animation-duration: 30s; animation-direction: reverse; }
+.cloud:nth-child(3) { top: 15%; left: 80%; animation-duration: 22s; }
+
+@keyframes drift {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100px); }
+}
+
+/* Cipreste escuro (mais alto e dramático, como na pintura) */
+.cypress {
+    position: absolute;
+    bottom: 0;
+    right: 10%;
+    width: 50px;
+    height: 250px; /* Aumentado para maior impacto */
+    background: linear-gradient(to top, #000000, #003300); /* Preto/verde escuro */
+    clip-path: polygon(50% 0%, 30% 100%, 70% 100%); /* Forma de árvore */
+    animation: sway 5s infinite ease-in-out;
+}
+
+@keyframes sway {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(2deg); }
+}
+
+/* Aldeia com luzes piscando (representando a vila adormecida) */
+.village {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background: linear-gradient(to top, #000000 0%, transparent 100%);
+}
+
+.house {
+    position: absolute;
+    width: 30px;
+    height: 20px;
+    background: #333;
+    bottom: 0;
+}
+.house .window {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: #ffff00; /* Luz amarela */
+    top: 5px;
+    left: 5px;
+    animation: flicker 2s infinite;
+}
+.house:nth-child(1) { left: 20%; }
+.house:nth-child(2) { left: 40%; }
+.house:nth-child(3) { left: 60%; }
+.house:nth-child(4) { left: 80%; }
+
+@keyframes flicker {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Lua (elemento adicional inspirado na pintura, embora não proeminente) */
+.moon {
+    position: absolute;
+    top: 15%;
+    right: 20%;
+    width: 40px;
+    height: 40px;
+    background: #f0f0f0;
+    border-radius: 50%;
+    box-shadow: 0 0 20px #ffffff;
+    animation: glow 4s infinite ease-in-out;
+}
+
+@keyframes glow {
+    0%, 100% { opacity: 0.8; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.1); }
+}
+
+/* ----------------------- RELÓGIO ----------------------- */
+#clock {
+    margin-top: 40px;
+    font-size: 60px;
+    color: #00bfff;
+    text-shadow: 0 0 20px #00bfff;
+    font-weight: bold;
+    letter-spacing: 3px;
+}
+
+/* ----------------------- CORTINA ANIMADA ----------------------- */
+.curtain {
+    position: fixed;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(#003b70, #001e35);
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    z-index: 10;
+    transition: top 2s ease-in-out;
+    box-shadow: 0 0 40px #009dff inset;
+}
+
+button {
+    padding: 12px 25px;
+    margin-top: 20px;
+    font-size: 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    background: #00bfff;
+    color: black;
+    font-weight: bold;
+    box-shadow: 0 0 20px #00bfff;
+    transition: 0.3s;
+}
+button:hover {
+    box-shadow: 0 0 35px #33ccff;
+    transform: scale(1.05);
+}
+
+/* ----------------------- CAIXAS DE PASSOS ----------------------- */
+.box {
+    display: none;
+    margin-top: 30px;
+    padding: 20px;
+    border: 2px solid #00bfff;
+    border-radius: 15px;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    background: rgba(0, 15, 35, 0.7);
+    backdrop-filter: blur(4px);
+    box-shadow: 0 0 20px #007acc;
+    animation: fadeBox 1s;
+}
+
+@keyframes fadeBox {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ----------------------- ÍCONE DE CADEADO ----------------------- */
+.lock {
+    font-size: 40px;
+    color: #00bfff;
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px #00bfff;
+}
+
+input {
+    padding: 10px;
+    width: 60%;
+    margin-top: 10px;
+    border-radius: 6px;
+    border: none;
+    font-size: 18px;
+}
+
+/* ----------------------- ESTILOS PARA A TELA FINAL (PASSO 4) ----------------------- */
+#finalScreen {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: black;
+    z-index: 100;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#sun {
+    width: 200px;
+    height: 200px;
+    background: #ffff00;
+    border-radius: 50%;
+    box-shadow: 0 0 50px #ffff00;
+    margin-bottom: 50px;
+}
+
+#finalText {
+    font-size: 40px;
+    color: white;
+    text-shadow: 0 0 20px #ffff00;
+    font-weight: bold;
+}
+</style>
+</head>
+<body>
+
+<!-- Fundo Noite Estrelada de Van Gogh (Global, Atrás de Tudo) -->
+<div id="starry">
+    <!-- Estrelas (algumas grandes para representar as estrelas proeminentes da pintura) -->
+    <div class="star" style="top: 10%; left: 20%;"></div>
+    <div class="star large" style="top: 15%; left: 50%;"></div>
+    <div class="star" style="top: 20%; left: 80%;"></div>
+    <div class="star" style="top: 25%; left: 30%;"></div>
+    <div class="star large" style="top: 30%; left: 70%;"></div>
+    <div class="star" style="top: 35%; left: 10%;"></div>
+    <div class="star" style="top: 40%; left: 60%;"></div>
+    <div class="star" style="top: 45%; left: 90%;"></div>
+    <!-- Nuvens -->
+    <div class="cloud"></div>
+    <div class="cloud"></div>
+    <div class="cloud"></div>
+    <!-- Cipreste -->
+    <div class="cypress"></div>
+    <!-- Lua -->
+    <div class="moon"></div>
+    <!-- Aldeia (removidas as 4 casas com luzes piscando) -->
+    <div class="village">
+    </div>
+</div>
+
+<div id="clock"></div>
+
+<!-- CORTINA -->
+<div class="curtain" id="curtain">
+    <h1 style="font-size:45px;text-shadow:0 0 15px #00bfff;">É hora…</h1>
+    <button onclick="showReveal()">Revelar</button>
+</div>
+
+<!-- PASSO 1 -->
+<div class="box" id="passo1">
+    <div class="lock" id="lock1">🔒</div>
+    <h2>1º Passo</h2>
+    <p>Não sou um girassol na jarra, mas seguro um alimento crocante e amarelo. Minha luz vem de uma tela gigante, como uma explosão da minha própria Noite Estrelada, Onde frames e histórias giram, mais rápidos que um pincel. Aqui, você se senta na sombra para ver a vida em luz projetada.</p>
+    <input id="resp1" placeholder="Digite sua resposta">
+    <button onclick="verificar1()">Enviar</button>
+    <p id="msg1"></p>
+</div>
+
+<!-- PASSO 2 -->
+<div class="box" id="passo2">
+    <div class="lock" id="lock2">🔒</div>
+    <h2>2º Passo</h2>
+    <p>Minha cor pode ser o amarelo vivo de um Girassol ou o azul profundo da Noite Estrelada. Sou apreciado em dias quentes, como no verão de Arles, Mas se for lento demais, começo a chorar, como se sentisse a melancolia de meu criador. Em vez de tinta, sou feito de creme e gelo. Sou servido em uma tigela ou em uma casquinha cônica — perfeita para segurar enquanto você sonha com paisagens que giram.</p>
+    <input id="resp2" placeholder="Digite sua resposta">
+    <button onclick="verificar2()">Enviar</button>
+    <p id="msg2"></p>
+</div>
+
+<!-- PASSO 3 -->
+<div class="box" id="passo3">
+    <div class="lock" id="lock3">🔒</div>
+    <h2>3º Passo</h2>
+    <p>Eu sou o lugar onde a luz de luminárias amarelas tenta imitar o sol forte do sul da França. Tenho paredes que esperam ser preenchidas por quadros e histórias, E guardo cadeiras simples, prontas para um descanso, como as do humilde quarto de um artista. Sou o seu porto, o seu abrigo do mundo lá fora, Um lugar onde até a louça parece ser pintada com pinceladas rápidas e emocionais.</p>
+    <input id="resp3" placeholder="Digite sua resposta">
+    <button onclick="verificar3()">Enviar</button>
+    <p id="msg3"></p>
+</div>
+
+<!-- PASSO 4 -->
+<div class="box" id="passo4">
+    <div class="lock" id="lock4">🔒</div>
+    <h2>4º Passo</h2>
+    <button onclick="erroFinal()">Clique aqui</button>
+    <p id="msg4"></p>
+</div>
+
+<!-- TELA FINAL (inicialmente oculta) -->
+<div id="finalScreen">
+    <div id="sun"></div>
+    <div id="finalText">AGORA É COM VOCÊ NICOLAS</div>
+</div>
+
+<script>
+// ------------------ DECLARAÇÃO DE VARIÁVEIS ------------------
+const clock = document.getElementById("clock");
+const curtain = document.getElementById("curtain");
+const resp1 = document.getElementById("resp1");
+const msg1 = document.getElementById("msg1");
+const passo1 = document.getElementById("passo1");
+const lock1 = document.getElementById("lock1");
+const resp2 = document.getElementById("resp2");
+const msg2 = document.getElementById("msg2");
+const passo2 = document.getElementById("passo2");
+const lock2 = document.getElementById("lock2");
+const resp3 = document.getElementById("resp3");
+const msg3 = document.getElementById("msg3");
+const passo3 = document.getElementById("passo3");
+const lock3 = document.getElementById("lock3");
+const passo4 = document.getElementById("passo4");
+const lock4 = document.getElementById("lock4");
+const msg4 = document.getElementById("msg4");
+const finalScreen = document.getElementById("finalScreen");
+
+// ------------------ CONTAGEM REGRESSIVA DE 10 SEGUNDOS ------------------
+// Definir contagem regressiva para a próxima sexta-feira às 16:30
+const now = new Date();
+const targetDate = new Date();
+
+// Define sexta-feira (em JS: 5 = sexta)
+targetDate.setHours(16, 30, 0, 0);
+targetDate.setDate(
+    now.getDate() + ((5 - now.getDay() + 7) % 7 || 7)
+);
+
+let countdownInterval = setInterval(atualizarContagem, 1000); // Variável para o intervalo
+
+function atualizarContagem() {
+    const now = new Date();
+    const diff = targetDate - now;
+
+    if (diff <= 0) {
+        clock.innerHTML = "00:00:00";
+        curtain.style.top = "0%"; // Cortina desce quando chega a 00:00:00
+        clearInterval(countdownInterval); // Para o intervalo para evitar redefinições
+        return;
+    }
+
+    const h = String(Math.floor(diff / 3600000)).padStart(2, "0");
+    const m = String(Math.floor((diff % 3600000) / 60000)).padStart(2, "0");
+    const s = String(Math.floor((diff % 60000) / 1000)).padStart(2, "0");
+
+    clock.innerHTML = `${h}:${m}:${s}`;
+}
+
+atualizarContagem(); // Chamada inicial
+
+// ------------------ ABRIR CORTINA E LIBERAR PASSOS ------------------
+function showReveal() {
+    curtain.style.top = "-100%"; // Cortina sobe, revelando o conteúdo
+    passo1.style.display = "block"; // Libera o primeiro passo
+    lock1.style.display = "none"; // Remove cadeado do Passo 1
+}
+
+// ------------------ PASSO 1 ------------------
+function verificar1() {
+    if (resp1.value.trim().toLowerCase() === "cinema") {
+        msg1.innerHTML = "✔ Parabéns!";
+        passo2.style.display = "block";
+        lock2.style.display = "none"; // Remove cadeado do Passo 2
+    } else {
+        msg1.innerHTML = "❌ Resposta incorreta.";
+    }
+}
+
+// ------------------ PASSO 2 ------------------
+function verificar2() {
+    if (resp2.value.trim().toLowerCase() === "sorvete") {
+        msg2.innerHTML = "✔ Muito bem!";
+        passo3.style.display = "block";
+        lock3.style.display = "none"; // Remove cadeado do Passo 3
+    } else {
+        msg2.innerHTML = "❌ Não é isso.";
+    }
+}
+
+// ------------------ PASSO 3 ------------------
+function verificar3() {
+    if (resp3.value.trim().toLowerCase() === "casa") {
+        msg3.innerHTML = "✔ Perfeito!";
+        passo4.style.display = "block";
+        lock4.style.display = "none"; // Remove cadeado do Passo 4
+    } else {
+        msg3.innerHTML = "❌ Resposta errada.";
+    }
+}
+
+// ------------------ PASSO FINAL ------------------
+function erroFinal() {
+    // Oculta todos os elementos anteriores
+    document.getElementById("starry").style.display = "none";
+    clock.style.display = "none";
+    curtain.style.display = "none";
+    passo1.style.display = "none";
+    passo2.style.display = "none";
+    passo3.style.display = "none";
+    passo4.style.display = "none";
+    
+    // Mostra a tela final
+    finalScreen.style.display = "flex";
+}
+</script>
