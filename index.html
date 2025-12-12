@@ -246,23 +246,14 @@ input {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    animation: fadeIn 2s ease forwards;
 }
 
-#sun {
-    width: 200px;
-    height: 200px;
-    background: #ffff00;
-    border-radius: 50%;
-    box-shadow: 0 0 50px #ffff00;
-    margin-bottom: 50px;
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
-#finalText {
-    font-size: 40px;
-    color: white;
-    text-shadow: 0 0 20px #ffff00;
-    font-weight: bold;
-}
 </style>
 </head>
 <body>
@@ -339,9 +330,11 @@ input {
 
 <!-- TELA FINAL (inicialmente oculta) -->
 <div id="finalScreen">
-    <div id="sun"></div>
-    <div id="finalText">AGORA É COM VOCÊ NICOLAS</div>
+    <img id="IMAGEMFINAL.png" src="IMAGEMFINAL.png" 
+         alt="Imagem Final"
+         style="max-width: 80%; border-radius: 25px; box-shadow: 0 0 40px #ffff00;">
 </div>
+
 
 <script>
 // ------------------ DECLARAÇÃO DE VARIÁVEIS ------------------
@@ -367,15 +360,7 @@ const finalScreen = document.getElementById("finalScreen");
 // ------------------ CONTAGEM REGRESSIVA DE 10 SEGUNDOS ------------------
 // Definir contagem regressiva para a próxima sexta-feira às 16:30
 const now = new Date();
-const targetDate = new Date();
-
-// Contagem regressiva para HOJE às 16:30
-targetDate.setHours(16, 30, 0, 0);
-
-// Se já passou das 16:30 hoje, coloca para amanhã
-if (targetDate < now) {
-    targetDate.setDate(targetDate.getDate() + 1);
-}
+const targetDate = new Date(now.getTime() + 10000); // 10.000 ms = 10 segundos
 
 
 let countdownInterval = setInterval(atualizarContagem, 1000); // Variável para o intervalo
