@@ -295,7 +295,7 @@ input {
 
 <!-- CORTINA -->
 <div class="curtain" id="curtain">
-    <h1 style="font-size:45px;text-shadow:0 0 15px #00bfff;">É hora…</h1>
+    <h1 style="font-size:45px;text-shadow:0 0 15px #00bfff;">Esta pronta?</h1>
     <button onclick="showReveal()">Revelar</button>
 </div>
 
@@ -369,11 +369,14 @@ const finalScreen = document.getElementById("finalScreen");
 const now = new Date();
 const targetDate = new Date();
 
-// Define sexta-feira (em JS: 5 = sexta)
+// Contagem regressiva para HOJE às 16:30
 targetDate.setHours(16, 30, 0, 0);
-targetDate.setDate(
-    now.getDate() + ((5 - now.getDay() + 7) % 7 || 7)
-);
+
+// Se já passou das 16:30 hoje, coloca para amanhã
+if (targetDate < now) {
+    targetDate.setDate(targetDate.getDate() + 1);
+}
+
 
 let countdownInterval = setInterval(atualizarContagem, 1000); // Variável para o intervalo
 
