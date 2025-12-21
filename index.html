@@ -358,16 +358,8 @@ const msg4 = document.getElementById("msg4");
 const finalScreen = document.getElementById("finalScreen");
 
 // ------------------ CONTAGEM REGRESSIVA DE 10 SEGUNDOS ------------------
-const now = new Date();
-const targetDate = new Date();
+let tempoRestante = 10; // 10 segundos
 
-// Contagem regressiva para HOJE às 16:30
-targetDate.setHours(16, 30, 0, 0);
-
-// Se já passou das 16:30 hoje, coloca para amanhã
-if (targetDate < now) {
-    targetDate.setDate(targetDate.getDate() + 1);
-}
 
 
 
